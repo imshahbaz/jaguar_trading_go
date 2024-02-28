@@ -15,13 +15,15 @@ import (
 	"github.com/joho/godotenv"
 )
 
+var port string
+
 func init() {
 	godotenv.Load()
 	constants.Init()
+	config()
 }
 
 func main() {
-	port := os.Getenv("PORT")
 	app := gin.Default()
 
 	app.GET("/", hello)
@@ -33,4 +35,10 @@ func main() {
 
 func hello(c *gin.Context) {
 	c.JSON(http.StatusOK, "Hello from jaguar trading")
+}
+
+func config() {
+	release_mode := os.Getenv("RELEASE_MODE")
+	gin.SetMode(release_mode)
+	port = os.Getenv("PORT")
 }
