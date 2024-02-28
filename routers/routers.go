@@ -8,4 +8,5 @@ import (
 
 func MountRouter(router *gin.Engine) {
 	controllers.MountMarginController(router)
+	controllers.MountDividendController(router)
 }
