@@ -6,9 +6,9 @@ import (
 )
 
 type Margin struct {
-	Name    string  `json:"name"`
-	Symbol  string  `json:"symbol"`
-	Percent float64 `json:"percent"`
+	Name    string  `json:"name" binding:"required"`
+	Symbol  string  `json:"symbol" binding:"required"`
+	Percent float64 `json:"percent" binding:"required,min=1"`
 }
 
 var data map[string]Margin

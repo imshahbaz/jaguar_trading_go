@@ -2,43 +2,24 @@ package main
 
 import (
 	"fmt"
-	"net/http"
 
 	router "jaguar/trading/routers"
 
-	"os"
-
 	"github.com/gin-gonic/gin"
 
-	constants "jaguar/trading/constants"
-
-	"github.com/joho/godotenv"
+	config "jaguar/trading/config"
 )
 
-var port string
-
 func init() {
-	godotenv.Load()
-	constants.Init()
-	config()
+	config.Init()
 }
 
 func main() {
 	app := gin.Default()
 
-	app.GET("/", hello)
+	app.GET("/", config.Hello)
 	router.MountRouter(app)
 
 	fmt.Println("Started Jaguar Trading")
-	app.Run(":" + port)
-}
-
-func hello(c *gin.Context) {
-	c.JSON(http.StatusOK, "Hello from jaguar trading")
-}
-
-func config() {
-	release_mode := os.Getenv("RELEASE_MODE")
-	gin.SetMode(release_mode)
-	port = os.Getenv("PORT")
+	app.Run(":" + config.Port)
 }
