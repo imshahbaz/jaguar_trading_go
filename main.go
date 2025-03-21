@@ -4,6 +4,7 @@ import (
 	"log"
 	"os"
 	"zuma/src/configs/constants"
+	"zuma/src/configs/threadpool"
 	"zuma/src/controller"
 	"zuma/src/service"
 
@@ -20,6 +21,7 @@ func init() {
 	})
 
 	zuma.Use(logger.New())
+	threadpool.InitPool()
 	controller.InitController(zuma)
 	marginService := service.NewMarginService()
 	constants.GsheetMargin = marginService.GetMarginData(constants.GsheetUrl)

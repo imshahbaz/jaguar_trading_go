@@ -4,7 +4,11 @@ go 1.24.1
 
 require github.com/gofiber/fiber/v2 v2.52.6
 
-require golang.org/x/net v0.33.0 // indirect
+require (
+	github.com/panjf2000/ants/v2 v2.11.2 // indirect
+	golang.org/x/net v0.33.0 // indirect
+	golang.org/x/sync v0.11.0 // indirect
+)
 
 require (
 	github.com/andybalholm/brotli v1.1.0 // indirect

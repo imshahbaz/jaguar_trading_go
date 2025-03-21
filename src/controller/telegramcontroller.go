@@ -4,6 +4,7 @@ import (
 	"log"
 	"sync"
 	"time"
+	"zuma/src/configs/threadpool"
 	"zuma/src/service"
 
 	"github.com/gofiber/fiber/v2"
@@ -46,6 +47,9 @@ func (service *telegramControllerImpl) PublishMessage(ctx *fiber.Ctx) error {
 		return ctx.Status(fiber.StatusOK).JSON("WeekEnd")
 	}
 
-	service.TelegramService.SendMessage()
+	threadpool.Pool.Submit(func() {
+		service.TelegramService.SendMessage()
+	})
+
 	return ctx.Status(fiber.StatusOK).JSON("Message Published Successfully")
 }
