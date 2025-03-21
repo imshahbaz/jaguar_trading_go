@@ -1,11 +1,11 @@
-import sys
-import requests
-from bs4 import BeautifulSoup
 import pandas as pd
-import json
+import requests
+import sys
+from bs4 import BeautifulSoup
 
 Charting_Link = "https://chartink.com/screener/"
 Charting_url = 'https://chartink.com/screener/process'
+
 
 def GetDataFromChartink(payload):
     payload = {'scan_clause': payload}
@@ -29,6 +29,7 @@ def GetDataFromChartink(payload):
 
         # Convert the DataFrame to a JSON string and return it
         return df.to_json(orient='records')
+
 
 # Main function to handle the script execution
 if __name__ == "__main__":

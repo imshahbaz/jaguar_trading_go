@@ -23,7 +23,6 @@ func init() {
 	controller.InitController(zuma)
 	marginService := service.NewMarginService()
 	constants.GsheetMargin = marginService.GetMarginData(constants.GsheetUrl)
-	log.Println(constants.GsheetMargin)
 }
 
 func main() {
