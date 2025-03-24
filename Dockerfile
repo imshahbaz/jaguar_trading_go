@@ -28,6 +28,9 @@ COPY --from=builder /app/main .
 
 COPY ./get_data.py ./get_data.py
 
+COPY requirements.txt .
+RUN pip install --no-cache-dir -r requirements.txt
+
 # Step 9: Expose the port the app will run on
 EXPOSE 8080
 
