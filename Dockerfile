@@ -24,6 +24,8 @@ WORKDIR /root/
 # Step 8: Copy the compiled binary from the builder container
 COPY --from=builder /app/main .
 
+COPY ./get_data.py ./get_data.py
+
 # Step 9: Expose the port the app will run on
 EXPOSE 8080
 
