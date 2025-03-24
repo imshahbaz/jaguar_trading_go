@@ -18,6 +18,8 @@ RUN go build -o main .
 # Step 6: Create a smaller image for the runtime
 FROM alpine:latest
 
+FROM python:3.9-alpine AS runtime
+
 # Step 7: Set the working directory in the runtime container
 WORKDIR /root/
 
