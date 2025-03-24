@@ -18,8 +18,6 @@ RUN go build -o main .
 # Step 6: Create a smaller image for the runtime
 FROM alpine:latest
 
-RUN apk add --no-cache python3 py3-pip
-
 # Step 7: Set the working directory in the runtime container
 WORKDIR /root/
 

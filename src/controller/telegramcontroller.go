@@ -40,7 +40,7 @@ func (service *telegramControllerImpl) PublishMessage(ctx *fiber.Ctx) error {
 	}
 
 	threadpool.Pool.Submit(func() {
-		service.TelegramService.SendMessage()
+		service.TelegramService.SendMessageV2()
 	})
 
 	return ctx.Status(fiber.StatusOK).JSON("Message Published Successfully")

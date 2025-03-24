@@ -29,3 +29,9 @@ const (
 	TelegramGroup   = "/telegram"
 	TelegramPublish = "/publish"
 )
+
+var ChartInkScanners = []strategy{
+	{Name: "Vollinger", Clause: "https://chartink.com/screener/vollinger", Active: true},
+	{Name: "Super Rsi", Clause: "https://chartink.com/screener/super-rsi-251", Active: true},
+	{Name: "EMACD", Clause: "https://chartink.com/screener/emacd-33", Active: false},
+}
