@@ -35,6 +35,7 @@ func (service *telegramServiceImpl) SendMessage() {
 
 		data, err := chartink.GetChartinkData(strategy.Clause)
 		if err != nil {
+			log.Printf("Error fetching chartink data : %v", err)
 			continue
 		}
 
