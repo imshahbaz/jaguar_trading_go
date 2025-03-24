@@ -1,7 +1,6 @@
 package controller
 
 import (
-	"log"
 	"sync"
 	"time"
 	"zuma/src/configs/threadpool"
@@ -31,14 +30,8 @@ func NewTelegramController(telegramService service.TelegramService) TelegramCont
 }
 
 func (service *telegramControllerImpl) PublishMessage(ctx *fiber.Ctx) error {
-	log.Println(time.Now())
-	loc, err := time.LoadLocation("Asia/Kolkata")
-	if err != nil {
-		log.Println("Error loading time zone:", err)
-		return ctx.Status(fiber.StatusBadRequest).JSON("Error fetching time")
-	}
-
-	indianNow := time.Now().In(loc)
+	durationToAdd := 5*time.Hour + 30*time.Minute
+	indianNow := time.Now().Add(durationToAdd)
 
 	indianDayString := indianNow.Weekday().String()
 
