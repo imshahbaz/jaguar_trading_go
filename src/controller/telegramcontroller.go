@@ -31,7 +31,7 @@ func NewTelegramController(telegramService service.TelegramService) TelegramCont
 }
 
 func (service *telegramControllerImpl) PublishMessage(ctx *fiber.Ctx) error {
-
+	log.Println(time.Now())
 	loc, err := time.LoadLocation("Asia/Kolkata")
 	if err != nil {
 		log.Println("Error loading time zone:", err)
