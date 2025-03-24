@@ -23,7 +23,7 @@ func NewChartInkService() ChartInkService {
 
 func (service *chartInkServiceImpl) GetChartinkData(scanClause string) ([]dto.ChartInkDto, error) {
 
-	cmd := exec.Command("python", "get_data.py", scanClause)
+	cmd := exec.Command("python", "./get_data.py", scanClause)
 
 	output, err := cmd.CombinedOutput()
 	if err != nil {
