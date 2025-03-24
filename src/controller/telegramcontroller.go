@@ -31,15 +31,14 @@ func NewTelegramController(telegramService service.TelegramService) TelegramCont
 }
 
 func (service *telegramControllerImpl) PublishMessage(ctx *fiber.Ctx) error {
-	utcNow := time.Now().UTC()
 
-	indianTimezone, err := time.LoadLocation("Asia/Kolkata")
+	loc, err := time.LoadLocation("Asia/Kolkata")
 	if err != nil {
 		log.Println("Error loading time zone:", err)
 		return ctx.Status(fiber.StatusBadRequest).JSON("Error fetching time")
 	}
 
-	indianNow := utcNow.In(indianTimezone)
+	indianNow := time.Now().In(loc)
 
 	indianDayString := indianNow.Weekday().String()
 
