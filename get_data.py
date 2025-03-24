@@ -1,6 +1,20 @@
+import subprocess
+import sys
+
+# List of required packages
+required_packages = ['pandas', 'requests', 'beautifulsoup4']
+
+# Install any missing packages
+for package in required_packages:
+    try:
+        __import__(package)  # Try to import the package
+    except ImportError:
+        print(f"{package} is not installed. Installing...")
+        subprocess.check_call([sys.executable, "-m", "pip", "install", package])
+
+# Now you can import the libraries after ensuring they are installed
 import pandas as pd
 import requests
-import sys
 from bs4 import BeautifulSoup
 
 Charting_Link = "https://chartink.com/screener/"
