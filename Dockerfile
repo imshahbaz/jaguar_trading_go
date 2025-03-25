@@ -22,7 +22,11 @@ FROM alpine:latest
 WORKDIR /root/
 
 FROM chromedp/headless-shell:latest
-RUN apt-get update; apt install dumb-init -y
+
+# Install necessary tools like dumb-init for process handling
+RUN apt-get update && apt-get install -y dumb-init
+
+# Use dumb-init to manage the application process in the container
 ENTRYPOINT ["dumb-init", "--"]
 
 # Step 8: Copy the compiled binary from the builder container
