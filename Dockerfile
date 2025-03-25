@@ -26,5 +26,5 @@ COPY --from=builder /app/main .
 # Step 7: Expose the port the app will run on
 EXPOSE 8080
 
-Step 8: Set the command to run the application
+#Step 8: Set the command to run the application
 CMD ["./main"]
