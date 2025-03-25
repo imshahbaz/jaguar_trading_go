@@ -30,12 +30,9 @@ RUN apk update && apk add --no-cache \
     libnss3 \
     libatk-bridge2.0-0 \
     libgtk-3-0 \
-    --repository=http://dl-cdn.alpinelinux.org/alpine/edge/main
-
-# Step 8: Install Google Chrome
-RUN wget https://dl.google.com/linux/direct/google-chrome-stable_current_amd64.deb -O /tmp/google-chrome.deb && \
-    apk add --no-cache --allow-untrusted /tmp/google-chrome.deb && \
-    rm /tmp/google-chrome.deb
+    chromium \
+    --virtual .build-deps \
+    && apk del .build-deps
 
 # Step 7: Set the working directory in the runtime container
 WORKDIR /root/
@@ -43,7 +40,7 @@ WORKDIR /root/
 # Step 8: Copy the compiled binary from the builder container
 COPY --from=builder /app/main .
 
-ENV CHROME_BIN=/usr/bin/google-chrome-stable
+ENV CHROME_BIN=/usr/bin/chromium-browser
 
 # Step 9: Expose the port the app will run on
 EXPOSE 8080
