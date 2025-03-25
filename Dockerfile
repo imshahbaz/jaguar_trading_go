@@ -62,7 +62,7 @@ COPY --from=builder /app/main .
 
 # Step 7: Expose the port the app will run on
 EXPOSE 8080
-EXPOSE 5901  # Expose VNC port
+EXPOSE 8090
 
 # Start VNC server and your Go application
 CMD /root/start.sh && tail -f /dev/null
