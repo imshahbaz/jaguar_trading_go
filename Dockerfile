@@ -21,14 +21,6 @@ FROM alpine:latest
 # Step 7: Set the working directory in the runtime container
 WORKDIR /root/
 
-FROM chromedp/headless-shell:latest
-
-# Install necessary tools like dumb-init for process handling
-RUN apt-get update && apt-get install -y dumb-init
-
-# Use dumb-init to manage the application process in the container
-ENTRYPOINT ["dumb-init", "--"]
-
 # Step 8: Copy the compiled binary from the builder container
 COPY --from=builder /app/main .
 
