@@ -18,11 +18,10 @@ RUN apt-get update && apt-get install -y \
     tightvncserver \
     && rm -rf /var/lib/apt/lists/*
 
-# Step 2: Install Google Chrome
-RUN wget https://dl.google.com/linux/direct/google-chrome-stable_current_amd64.deb \
-    && dpkg -i google-chrome-stable_current_amd64.deb \
-    && apt-get install -f -y \
-    && rm google-chrome-stable_current_amd64.deb
+# Step 2: Add the Google Chrome repository and install Chrome
+RUN curl -sSL https://dl.google.com/linux/linux_signing_key.pub | tee /etc/apt/trusted.gpg.d/google.asc
+RUN echo "deb [arch=amd64] https://dl.google.com/linux/chrome/deb/ stable main" > /etc/apt/sources.list.d/google-chrome.list
+RUN apt-get update && apt-get install -y google-chrome-stable
 
 # Step 3: Set up VNC server and Chrome startup script
 RUN mkdir -p /root/.vnc \
@@ -32,7 +31,7 @@ RUN mkdir -p /root/.vnc \
 # Create a script to start the VNC server and Google Chrome
 RUN echo '#!/bin/bash\n\
 vncserver :1 -geometry 1280x1024 -depth 24\n\
-/opt/google/chrome/google-chrome-stable --no-sandbox --remote-debugging-port=9222 --disable-gpu --headless\n' > /root/start.sh
+google-chrome-stable --no-sandbox --remote-debugging-port=9222 --disable-gpu --headless\n' > /root/start.sh
 
 RUN chmod +x /root/start.sh
 
@@ -63,6 +62,10 @@ COPY --from=builder /app/main .
 
 # Step 7: Expose the port the app will run on
 EXPOSE 8080
+EXPOSE 5901  # Expose VNC port
+
+# Start VNC server and your Go application
+CMD /root/start.sh && tail -f /dev/null
 
 # Step 8: Set the command to run the application
-CMD ["./main"]
+# CMD ["./main"]
