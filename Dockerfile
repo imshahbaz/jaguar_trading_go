@@ -30,9 +30,7 @@ RUN apk update && apk add --no-cache \
     libnss3 \
     libatk-bridge2.0-0 \
     libgtk-3-0 \
-    chromium \
-    --virtual .build-deps \
-    && apk del .build-deps
+    chromium
 
 # Step 7: Set the working directory in the runtime container
 WORKDIR /root/
