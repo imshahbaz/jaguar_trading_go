@@ -18,27 +18,15 @@ RUN go build -o main .
 # Step 6: Create a smaller image for the runtime
 FROM alpine:latest
 
-RUN apk update && apk add --no-cache \
-    bash \
-    ca-certificates \
-    wget \
-    curl \
-    libx11 \
-    libx264 \
-    libfontconfig \
-    libxss \
-    libnss3 \
-    libatk-bridge2.0-0 \
-    libgtk-3-0 \
-    chromium
-
 # Step 7: Set the working directory in the runtime container
 WORKDIR /root/
 
+FROM chromedp/headless-shell:latest
+RUN apt-get update; apt install dumb-init -y
+ENTRYPOINT ["dumb-init", "--"]
+
 # Step 8: Copy the compiled binary from the builder container
 COPY --from=builder /app/main .
-
-ENV CHROME_BIN=/usr/bin/chromium-browser
 
 # Step 9: Expose the port the app will run on
 EXPOSE 8080
