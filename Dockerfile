@@ -1,6 +1,6 @@
 FROM ubuntu:latest
 
-# Step 1: Update package list and install dependencies
+# Step 1: Install dependencies for Chrome and VNC
 RUN apt-get update && apt-get install -y \
     wget \
     curl \
@@ -13,13 +13,28 @@ RUN apt-get update && apt-get install -y \
     libxss1 \
     libxtst6 \
     xdg-utils \
+    x11vnc \
+    xfce4 \
+    tightvncserver \
     && rm -rf /var/lib/apt/lists/*
 
-# Step 2: Add Google's official Chrome repository and install Chrome
+# Step 2: Install Google Chrome
 RUN wget https://dl.google.com/linux/direct/google-chrome-stable_current_amd64.deb \
     && dpkg -i google-chrome-stable_current_amd64.deb \
     && apt-get install -f -y \
     && rm google-chrome-stable_current_amd64.deb
+
+# Step 3: Set up VNC server and Chrome startup script
+RUN mkdir -p /root/.vnc \
+    && echo "password" | vncpasswd -f > /root/.vnc/passwd \
+    && chmod 600 /root/.vnc/passwd
+
+# Create a script to start the VNC server and Google Chrome
+RUN echo '#!/bin/bash\n\
+vncserver :1 -geometry 1280x1024 -depth 24\n\
+/opt/google/chrome/google-chrome-stable --no-sandbox --remote-debugging-port=9222 --disable-gpu --headless\n' > /root/start.sh
+
+RUN chmod +x /root/start.sh
 
 # Step 1: Build the Go application in a Go-based container
 FROM golang:1.24.1-alpine AS builder
