@@ -1,39 +1,63 @@
+# # Step 1: Build the Go application in a Go-based container
+# FROM golang:1.24.1-alpine AS builder
+#
+# COPY . /app
+# # Step 2: Set the working directory
+# WORKDIR /app
+#
+# # Step 3: Copy the Go modules and download dependencies
+# COPY go.mod go.sum ./
+# RUN go mod download
+#
+# # Step 4: Copy the source code into the container
+# COPY . .
+#
+# # Step 5: Build the Go application (the output is a binary file)
+# RUN go build -o main .
+#
+# # Step 6: Create a smaller image for the runtime
+# FROM alpine:latest
+#
+# # Step 7: Set the working directory in the runtime container
+# WORKDIR /root/
+#
+# # Step 8: Copy the compiled binary from the builder container
+# COPY --from=builder /app/main .
+#
+# # Step 9: Expose the port the app will run on
+# EXPOSE 8080
+#
+# # Step 10: Set the command to run the application
+# CMD ["./main"]
+
+
 # Step 1: Build the Go application in a Go-based container
 FROM golang:1.24.1-alpine AS builder
 
-COPY . /app
-# Step 2: Set the working directory
+# Set the working directory
 WORKDIR /app
 
-# Step 3: Copy the Go modules and download dependencies
+# Step 2: Copy the Go modules files and download dependencies
 COPY go.mod go.sum ./
-RUN go mod download
+RUN go mod tidy && go mod download
 
-# Step 4: Copy the source code into the container
+# Step 3: Copy the rest of the source code
 COPY . .
 
-# Step 5: Build the Go application (the output is a binary file)
+# Step 4: Build the Go application (the output is a binary file)
 RUN go build -o main .
 
-# Step 6: Create a smaller image for the runtime
+# Step 5: Create a smaller image for the runtime
 FROM alpine:latest
 
-# Step 7: Set the working directory in the runtime container
+# Set the working directory in the runtime container
 WORKDIR /root/
 
-FROM chromedp/headless-shell:latest
-
-# Install necessary tools like dumb-init for process handling
-RUN apt-get update && apt-get install -y dumb-init
-
-# Use dumb-init to manage the application process in the container
-ENTRYPOINT ["dumb-init", "--"]
-
-# Step 8: Copy the compiled binary from the builder container
+# Step 6: Copy the compiled binary from the builder container
 COPY --from=builder /app/main .
 
-# Step 9: Expose the port the app will run on
+# Step 7: Expose the port the app will run on
 EXPOSE 8080
 
-# Step 10: Set the command to run the application
+# Step 8: Set the command to run the application
 CMD ["./main"]
